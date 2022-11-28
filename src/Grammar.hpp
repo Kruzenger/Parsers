@@ -1,0 +1,4 @@
+class Grammatic {
+ public:
+ private:
+};

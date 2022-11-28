@@ -1,9 +1,4 @@
-
-
-class Grammatic {
- public:
- private:
-};
+#include "Grammar.hpp"
 
 class EarleyParser {
  public:
