@@ -4,7 +4,9 @@ project(my_cpp_project) #name of your project
 
 set(src ${CMAKE_SOURCE_DIR})
 
-add_subdirectory(.gitignore/googletest) # add googletest subdirectory
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+add_subdirectory(googletest) # add googletest subdirectory
 
 include_directories(googletest/include) # this is so we can #include <gtest/gtest.h>
 
