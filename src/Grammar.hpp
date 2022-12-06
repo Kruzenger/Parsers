@@ -116,7 +116,7 @@ Grammar_CF::Grammar_CF(std::string file_name) {
     char start_symbol = 0;
     input >> start_symbol;
     if (N_.find(start_symbol) != N_.end()) {
-      continue;  // Skip inaccessible rule
+      continue;
     }
     rule.start_state_ = N_[start_symbol];
     std::string lead_symbols;
