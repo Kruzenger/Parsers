@@ -1,4 +1,6 @@
 3
-R a b
+R 0 
+a 1
+b 1
 1
 S aSbS

@@ -8,11 +8,7 @@
 #include "../src/Earley.hpp"
 
 TEST(ContextFreeGrammar, Constructor) {
-  try {
-    Grammar_CF grammar("../tests/test_constructor_1.txt");
-  } catch (std::logic_error ex) {
-    std::cout << ex.what() << '\n';
-  }
+  EXPECT_NO_THROW(Grammar_CF grammar("../tests/test_constructor_1.txt"));
 }
 
 TEST(ContextFreeGrammar, ConstructorExceptions) {
@@ -40,7 +36,44 @@ TEST(ContextFreeGrammar, ConstructorExceptions) {
   }
 }
 
-TEST(EarleyParser, Consructor) {}
+TEST(EarleyParser, Consructor) {
+  try {
+    Grammar_CF grammar("../tests/test_constructor_1.txt");
+    EXPECT_NO_FATAL_FAILURE(EarleyParser parser(grammar));
+  } catch (std::logic_error ex) {
+    std::cout << ex.what() << '\n';
+  }
+}
+
+TEST(EarleyParser, SimpleParse) {
+  try {
+    Grammar_CF grammar("../tests/test_parse_simple.txt");
+    EarleyParser parser(grammar);
+    EXPECT_TRUE(parser.Parse("aabb"));
+    EXPECT_TRUE(parser.Parse("aabbab"));
+    EXPECT_TRUE(parser.Parse("aabbababaaabbb"));
+    EXPECT_FALSE(parser.Parse("abba"));
+    EXPECT_FALSE(parser.Parse("abbababa"));
+    EXPECT_FALSE(parser.Parse("aabbbbaaab"));
+  } catch (std::logic_error ex) {
+    std::cout << ex.what() << '\n';
+  }
+}
+
+TEST(EarleyParser, ComplexParse) {
+  try {
+    Grammar_CF grammar("../tests/test_parse_complex.txt");
+    EarleyParser parser(grammar);
+    EXPECT_TRUE(parser.Parse("aabb"));
+    EXPECT_TRUE(parser.Parse("aabbab"));
+    EXPECT_TRUE(parser.Parse("aabbababaaabbb"));
+    EXPECT_FALSE(parser.Parse("abba"));
+    EXPECT_FALSE(parser.Parse("abbababa"));
+    EXPECT_FALSE(parser.Parse("aabbbbaaab"));
+  } catch (std::logic_error ex) {
+    std::cout << ex.what() << '\n';
+  }
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);

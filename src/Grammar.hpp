@@ -8,6 +8,7 @@
 
 class Grammar_CF {
   friend class EarleyParser;
+
   class State;
   class Rule;
 
@@ -15,12 +16,16 @@ class Grammar_CF {
   Grammar_CF();
   Grammar_CF(std::string file_name);
 
+  friend bool operator==(const Rule& lhs, const Rule& rhs);
+  friend bool operator==(const State& lhs, const State& rhs);
+  friend bool operator==(const State& lhs, const char& rhs);
+
   friend std::istream& operator>>(std::istream& stream, State& obj);
 
  private:
   std::map<char, State> N_;
   std::map<char, State> E_;
-  std::map<char, Rule> R_;
+  std::vector<Rule> R_;
 };
 
 class Grammar_CF::State {
@@ -33,8 +38,8 @@ class Grammar_CF::State {
   friend std::istream& operator>>(std::istream& stream, State& obj);
 
   bool IsTerminal();
-  bool operator==(const State& other) const;
-  bool operator==(const char& other) const;
+  friend bool operator==(const State& lhs, const State& rhs);
+  friend bool operator==(const State& lhs, const char& rhs);
 
  private:
   char symbol_ = 0;
@@ -45,12 +50,17 @@ class Grammar_CF::State {
 
 class Grammar_CF::Rule {
   friend Grammar_CF;
+  friend class EarleyParser;
 
  public:
   Rule();
   Rule(const State& start_state);
   Rule(const State& start_state,
        const std::vector<Grammar_CF::State>& lead_states);
+
+  friend bool operator==(const Rule& lhs, const Rule& rhs);
+
+  Grammar_CF::State& operator[](size_t index);
 
  private:
   Grammar_CF::State start_state_;
