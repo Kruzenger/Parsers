@@ -1,7 +1,7 @@
 #include "./Earley.hpp"
 
 int main() {
-  Grammar_CF grammar("../tests/your_test.txt");
+  Grammar_CF grammar("./tests/your_test.txt");
   EarleyParser parser(grammar);
 
   std::string word;
