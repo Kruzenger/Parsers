@@ -7,7 +7,7 @@ int main() {
   std::string word;
   std::cin >> word;
 
-  while (word[0] != EOF) {
+  while (word != "exit") {
     std::cout << (parser.Parse(word) ? "YES" : "NO") << std::endl;
     std::cin >> word;
   }
