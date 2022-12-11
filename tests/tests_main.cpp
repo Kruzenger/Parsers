@@ -75,6 +75,23 @@ TEST(EarleyParser, ComplexParse) {
   }
 }
 
+TEST(EarleyParser, ComplexParseString) {
+  try {
+    Grammar_CF grammar("../tests/test_parse_complex.txt");
+    EarleyParser parser(grammar);
+    std::string words[6] = {"aabb", "aabbab",   "aabbababaaabbb",
+                            "abba", "abbababa", "aabbbbaaab"};
+    EXPECT_TRUE(parser.Parse(words[0]));
+    EXPECT_TRUE(parser.Parse(words[1]));
+    EXPECT_TRUE(parser.Parse(words[2]));
+    EXPECT_FALSE(parser.Parse(words[3]));
+    EXPECT_FALSE(parser.Parse(words[4]));
+    EXPECT_FALSE(parser.Parse(words[5]));
+  } catch (std::logic_error ex) {
+    std::cout << ex.what() << '\n';
+  }
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
