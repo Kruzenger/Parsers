@@ -1,15 +1,57 @@
-cmake_minimum_required(VERSION 3.12) # version can be different
+cmake_minimum_required(VERSION 3.15)
+project(CoverageTest)
 
-project(my_cpp_project) #name of your project
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-set(src ${CMAKE_SOURCE_DIR})
+set(CMAKE_CXX_STANDARD 14)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-add_subdirectory(googletest) # add googletest subdirectory
+# setup googletest
+add_subdirectory(googletest)
 
-include_directories(googletest/include) # this is so we can #include <gtest/gtest.h>
+# create our library
+add_library(Parse STATIC src/Grammar.hpp src/Grammar.cpp src/Earley.hpp src/Earley.cpp)
+add_dependencies(Parse gtest gtest_main)
 
-add_executable(tests ./tests/tests_main.cpp ../src/Earley.cpp ../src/Grammar.cpp) # add this executable
+# create the test executable
+add_executable(TestParser tests/tests_main.cpp)
+target_include_directories(TestParser PRIVATE googletest/googletest)
+target_link_libraries(TestParser PRIVATE
+Parse gtest gtest_main)
+add_dependencies(TestParser Parse gtest gtest_main)
 
-target_link_libraries(tests PRIVATE gtest) # link google test to this executable
+# now for coverage bits
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+if (CMAKE_COMPILER_IS_GNUCXX)
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+
+    # we need to turn off optimization for non-skewed coverage reports
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O0")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+
+    # optional excludes - None needed here
+    #    set(COVERAGE_EXCLUDES)
+
+    # importantly, set the path to the gcovr executable that you downladed
+    set(GCOVR_PATH "/usr/bin/gcovr")
+    # Works
+    setup_target_for_coverage_gcovr_xml(
+            NAME TestParserCoverageXml
+            EXECUTABLE TestParser
+            DEPENDENCIES TestParser Parse
+    )
+    # Works
+    setup_target_for_coverage_gcovr_html(
+            NAME TestParserCoverageHtml
+            EXECUTABLE TestParser
+            DEPENDENCIES TestParser Parse
+    )
+    # This one did not work for me:
+    setup_target_for_coverage_lcov(
+            NAME TestParserCoverageLcov
+            EXECUTABLE TestParser
+            DEPENDENCIES TestParser Parse
+    )
+endif ()

@@ -4,7 +4,7 @@ Formal languages practics
 
 Hello everyone! Today I want to tell you how to use my realisation of Earley Parser:
 
-So, first of all My project contains some tests. You can run them, by cloning googletests in main folder with Parser, and build the project with CMake. You can find basic CMakeLists.txt in main folder as well.
+So, first of all My project contains some tests. You can run them, by cloning googletests in main folder with Parser, and build the project with CMake, using target TestParser. Also you can use target TestParserCoverageHtml to generate Code Coverage Info, that can be found in ```build/``` directory.
 
 If you want to compile Parser without tests, use command ```g++ -g ./src/main.cpp ./src/Earley.cpp ./src/Grammar.cpp -o execute_me.out``` and now you can find executable file named ```execute_me.out```. Congratulations, You are almost ready to have fun. All that's left - is to write your own grammatic in file your_test. You can find it in directory ```tests/```
 
