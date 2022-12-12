@@ -13,7 +13,7 @@ There is how to input your grammatic:
 * N - number of symbols
 * N lines in format: S T, where S - symbol, T = 1 if this symbol is Terminal, 0 if not.
 * M - number of Rules
-* M lines in format: N a, where N - nonterminal, a - string of terminals and nonterminals
+* M lines in format: N S, where N - nonterminal, S - string of terminals and nonterminals
 
 Example:
 
